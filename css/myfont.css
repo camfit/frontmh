@@ -4,3 +4,10 @@
     font-family: 'Jua','Gamja Flower','Noto Sans KR', sans-serif;
     box-sizing: border-box;
 }
+.btn-heart{
+    /* border: 1px dotted; */
+    padding: 1.3rem 2rem;
+    text-indent: -9999em;
+    background: #fff url(../images/icon_heart.svg) no-repeat center;
+    background-size: 30px;
+}
