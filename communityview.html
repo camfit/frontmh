@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/mystyle.css" rel="stylesheet">
+    <link href="css/myfont.css" rel="stylesheet">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/mycookie.js"></script>
+    <style>
+        p {
+            border: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="m-3"></div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-2 pt-1">
+                <h1><a class="nav-link" href="index.html">캠핑가이드</a></h1>
+            </div>
+            <div class="col-8 p-2">
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">MAIN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="background-color: #efefef;" href="community.html">COMMUNITY</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reservation.html">RESERVATION</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mypage.html">MYPAGE</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+    <div class="m-5"></div>
+    <!-- 최근 캠핑 커뮤니티 시작-->
+    <div class="container">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-11">
+                <h3>COMMUNITY VIEW</h3>
+            </div>
+        </div>
+        <div class="row p-3 justify-content-center">
+            <div class="col-1"></div>
+            <div class="col-10" style="min-height: 60vh;">
+                <div class="m-2">
+                    <label for="title">제목</label>
+                    <p id="title" class="m-1 p-2"></p>
+                </div>
+                <div class="m-2">
+                    <label for="content">내용</label>
+                    <p id="content" class="m-1 p-2" style="height: 10rem;"></p>
+                </div>
+                <div class="m-2">
+                    <label for="content">작성자</label>
+                    <p id="memberName" class="m-1 p-2"></p>
+                </div>
+                <div>
+                    <strong>파일</strong><br>
+                    <div class="m-3">
+                        <img id="myfile" height="300" src="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-1">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-9">
+                <a class="btn btn-primary" href="community.html">목록</a>
+            </div>
+            <div class="col-2">
+                <a class="btn btn-primary" id="modify" href="#">수정</a>
+                <a class="btn btn-primary" id="delete" href="#">삭제</a>
+            </div>
+        </div>
+    </div>
+    <!-- 최근 캠핑 커뮤니티 엔드 -->
+    <div class="container">
+        <div class="row m-4">
+            <div class="col-1"></div>
+            <div class="col-10">
+                Copyright By WE CAN DO IT team. All rights reserved. Since 2022
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    let myidtoken = getCookie('myidtoken');
+    const url = new URL(window.location.href);
+    const urlParams = url.searchParams;
+
+    // URLSearchParams.get()
+    console.log(urlParams.get('id')); // ekw000033653
+    let id = urlParams.get('id');
+    $.ajax({
+        url: 'http://localhost:8080/board/look/' + id,
+        async: true, // false 일 경우 동기 요청으로 변경
+        type: 'get', // POST, GET, PUT
+        // data: { // 전송할 데이터
+        //     "id": urlParams.get('id')
+        // },
+        dataType: 'json', // text, xml, json, script, html
+        beforeSend: function (res) {
+
+        }, // 요청하기 전에 호출
+        success: function (res) {
+            console.log(res);
+            $("#content").html(res.content);
+            $("#title").html(res.title);
+            $("#memberName").html(res.memberName);
+            if (res.path[0] != null)
+                $("#myfile").attr("src", "http://localhost:8080/" + res.path[0]);
+
+        }, // 요청 완료 시
+        error: function (res) {
+            console.log(res);
+        }, // 요청 실패 시
+        complete: function (res) {} // 요청 결과 상관 없이 무조건 호출
+    });
+    $('#modify').on('click', function (e) {
+        e.preventDefault();
+        location.href = "communitymodify.html?id=" + id;
+    })
+    $('#delete').on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: 'http://localhost:8080/board/delete/',
+            async: true, // false 일 경우 동기 요청으로 변경
+            type: 'delete', // POST, GET, PUT
+            data: { // 전송할 데이터
+                "member_id": 1,
+                "board_id": urlParams.get('id')
+            },
+            // dataType: 'json', // text, xml, json, script, html
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + myidtoken);
+            }, // 요청하기 전에 호출
+            success: function (res) {
+                console.log(res);
+                location.href = "community.html";
+            }, // 요청 완료 시
+            error: function (res) {
+                console.log(res);
+            }, // 요청 실패 시
+            complete: function (res) {} // 요청 결과 상관 없이 무조건 호출
+        });
+    })
+</script>

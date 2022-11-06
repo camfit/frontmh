@@ -1,0 +1,17 @@
+// Variable overrides first
+$primary: rgb(31, 10, 115);
+$enable-shadows: true;
+
+$border-radius:               0;
+$border-radius-sm:            0;
+$border-radius-lg:            0;
+$border-radius-xl:            0;
+$border-radius-2xl:           0;
+$border-radius-pill:          0;
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+// Then import Bootstrap
+@import "./node_modules/bootstrap/scss/bootstrap";
